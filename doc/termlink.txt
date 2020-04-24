@@ -1,0 +1,72 @@
+*termlink.txt* send lines, blocks and files to :term instance
+
+                                 ~~
+ _____               _ _     _   ~~
+|_   _|___ ___ _____| |_|___| |_ ~~
+  | | | -_|  _|     | | |   | '_|~~
+  |_| |___|_| |_|_|_|_|_|_|_|_,_|~~
+                                 ~~
+
+Send lines, filetype specific blocks of code and source commands
+easily to in-vim terminal instances.
+
+==============================================================================
+CONTENTS                                                          *termlink*
+
+    1. Usage                |termlink_usage|
+    2. Mappings             |termlink_mappings|
+    3. supported filetypes  |termlink_filetypes|
+    4. extending termlink   |termlink_extend|
+
+==============================================================================
+Section 1. Usage                                            *termlink_usage*
+
+start a termlink window
+
+send lines
+
+send blocks
+
+send "files"
+
+alter termlink window (TBD)
+==============================================================================
+Section 2. Mappings                                      *termlink_mappings*
+
+    normal mappings:
+    <leader>l       start termlink term
+    <c-l>           send line
+    <c-b>           send block (filetype dependent)
+    <c-f>           send file source command (filetype dependent)
+
+    visual mappings:
+    <c-l>           send visual selection
+
+==============================================================================
+Section 3. Supported Filetypes                          *termlink_filetypes*
+
+As of 2020-04-13 termlink supports:
+
+python:
+    supports sending of blocks, dependent on indent level.
+    also file sourcing for python3
+    (TBD) file sourcing for python2
+
+rudimentary bash:
+    I don't do enough bash scripting to know much about it
+    can source files
+
+R (TBD)
+    (TBD) file sourcing in R
+    (TBD) file sourcing in shell
+    (TBD) function sourcing
+==============================================================================
+Section 4. Extending Termlink                              *termlink_extend*
+
+    This plugin is essentially a very simple wrapper for the built-in
+    |term_sendkeys()| command, so adding more features is reasonably 
+    straight-forward.
+
+    1. Extending for further filetypes:
+    There are essentially only 2 commands to implement to match the 
+    existing features of the plugin: send block and send file source
