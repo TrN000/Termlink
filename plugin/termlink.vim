@@ -3,52 +3,72 @@
 " Version: 0.0
 
 " TODO: get bash working
+"       :h <SID>
+"       bug for visual in python??
 "       DONE make proper plugin
 "       DONE fix python block
-"       possibly need to work with operators, that allow motions :h operatorfunc
-"       :h operatorfunc
-"       :h <SID>
+"       DONE possibly need to work with operators, that allow motions :h operatorfunc
 
-" standart ifdef guard
+" ifdef guard
 if exists("g:loaded_termlink")
    finish
 endif
 let g:loaded_termlink=1
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" globals
 
-" if a termlink window has already been opened
-let g:termlink_active = 0
 " keep track of terminal buffer number
 let g:termlink_term = 0
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " keybinds
-nnoremap <leader>l :call Termlink_start()<cr>
-nnoremap <C-L> :call Termlink_send()<cr>j " send line
+nnoremap <leader>s :call Termlink_start()<cr>
+nnoremap <C-L> :call Termlink_send()<cr>j
 vnoremap <C-L> :<C-U>call Termlink_send(Get_visual_selection())<cr>gv
+nnoremap <leader>l :call Termlink_send("\<c-l>", "")<cr>
+nnoremap <leader>d :call Termlink_send("\<c-d>", "")<cr>
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" internal functions
+
+" send first argument to termlink instance; creates one if necessary.
+" if none is provided line at cursor position is sent.
+" second argument is used as end char, if ommited '\<cr>' is used.
 function! Termlink_send(...)
     if a:0 == 0
         let line = getline(".")
     else
         let line = a:1
     endif
-    if g:termlink_term == 0
-        let term = term_list()[-1]
+
+    if a:0 > 1
+        let endchar = a:2
     else
-        let term = g:termlink_term
+        let endchar = "\<cr>"
     endif
-    call term_sendkeys(term, line . "\<cr>")
+
+    if bufnr(g:termlink_term) <= 0
+        call Termlink_start()
+    endif
+    let term = g:termlink_term
+
+    call term_sendkeys(term, line . endchar)
 endfunction
 
+" starts a :term instance and stores the bufnr in g:termlink.
+" string provided to the 'comm' argument is sent to the term.
 function! Termlink_start(comm="")
     rightb vert term 
     let g:termlink_term = term_list()[-1]
-    let g:termlink_active = 1
+    wincmd p
     if a:comm !=? ""
         call Termlink_send(a:comm)
     endif
 endfunction
 
+" returns visual selection
 " function credit to stack-overflow user 'xolox' licensed as public domain.
 " https://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript?noredirect=1&lq=1
 function! Get_visual_selection()
