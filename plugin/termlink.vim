@@ -2,9 +2,11 @@
 " Author: Nicolas Trutmann nicolas.trutmann (at) gmx.ch
 " Version: 0.0
 
-" TODO: get bash working
+" TODO: 
+"       unexpected behaviour when calling <c-d>, turns termlink on and off
+"       get bash working
 "       :h <SID>
-"       bug for visual in python??
+"       bug for python?? caused by being too fast for pythons interpreter...
 "       DONE make proper plugin
 "       DONE fix python block
 "       DONE possibly need to work with operators, that allow motions :h operatorfunc
@@ -20,6 +22,7 @@ let g:loaded_termlink=1
 
 " keep track of terminal buffer number
 let g:termlink_term = 0
+let g:termlink_comm = ""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " keybinds
@@ -59,7 +62,11 @@ endfunction
 
 " starts a :term instance and stores the bufnr in g:termlink.
 " string provided to the 'comm' argument is sent to the term.
-function! Termlink_start(comm="")
+function! Termlink_start(comm=g:termlink_comm)
+    if bufnr(g:termlink_term) > 0
+        echom "Termlink already started"
+        return
+    endif
     rightb vert term 
     let g:termlink_term = term_list()[-1]
     wincmd p
