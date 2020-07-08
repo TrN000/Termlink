@@ -3,10 +3,16 @@
 " Version: 0.0
 
 " TODO: 
-"       unexpected behaviour when calling <c-d>, turns termlink on and off
+"       :scriptversion to keep track of default argument situation with
+"           Termlink_start 
+"       make command
+"       formal def of what I want of filetype functions
+"           i.e. circumscribe the end state of functionality
+"       uncomment function
+"       NO: unexpected behaviour when calling <c-d>, turns termlink on and off
 "       get bash working
-"       :h <SID>
-"       bug for python?? caused by being too fast for pythons interpreter...
+"       NO: :h <SID>
+"       NO: bug for python?? caused by being too fast for pythons interpreter...
 "       DONE make proper plugin
 "       DONE fix python block
 "       DONE possibly need to work with operators, that allow motions :h operatorfunc

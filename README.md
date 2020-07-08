@@ -48,6 +48,11 @@ as of 2020-05-30 it also opens termlink (not yet sure if bug or feature)
 You are of course permitted to fork the repo and extend it on your own.
 I only ask you to give credit.
 
+### known issues
+
+Termlink_send is broken when using vim version `<=8.2` since default arguments don't work there.
+patch in progress.
+
 ### better alternatives
 
 This is in many ways a general purpose tool, not specialized to any one 
